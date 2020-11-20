@@ -46,7 +46,7 @@ const CurrencyEContainer: React.FunctionComponent<ICurrencyProps> = ({
         if (value === '') {
           setCurrencyAmount(value, value);
         } else {
-          setCurrencyAmount(value, (+Number(value).toFixed(2) / currencyRate).toFixed(2));
+          setCurrencyAmount(value, (+ ( Number(value).toFixed(2) ) / currencyRate).toFixed(2));
         }
       } else {
         if (value === '') {
