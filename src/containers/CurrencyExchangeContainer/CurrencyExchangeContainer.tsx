@@ -3,18 +3,17 @@ import { connect } from 'react-redux';
 import CurrencyExchange from '../../components/CurrencyExchange/CurrencyExchange';
 import { IGlobalState } from '../../redux/state';
 import { CurrencyState } from '../../redux/currencyReducer';
-import { compose, Dispatch } from 'redux';
+import { compose } from 'redux';
 import {
   ChangeActionAC,
   ChangeCurrencyFieldAC,
   changeCurrentCurrencyAC,
-  CurrencyReducersTypes,
 } from '../../redux/actions';
 
 interface ICurrencyProps extends CurrencyState {
-  setCurrencyAmount: (amountOfBYN: string, amountOfCurrency: string) => void;
-  setAction: (isBuying: boolean) => void;
-  changeCurrency: (currency: string) => void;
+    ChangeCurrencyFieldAC: (amountOfBYN: string, amountOfCurrency: string) => void;
+    ChangeActionAC: (isBuying: boolean) => void;
+    changeCurrentCurrencyAC: (currency: string) => void;
 }
 
 const CurrencyEContainer: React.FunctionComponent<ICurrencyProps> = ({
@@ -23,9 +22,7 @@ const CurrencyEContainer: React.FunctionComponent<ICurrencyProps> = ({
   isBuying,
   amountOfBYN,
   amountOfCurrency,
-  setCurrencyAmount,
-  setAction,
-  changeCurrency,
+  changeCurrentCurrencyAC,ChangeActionAC,ChangeCurrencyFieldAC,
 }) => {
 
   let currencyRate: number = 0;
@@ -44,26 +41,26 @@ const CurrencyEContainer: React.FunctionComponent<ICurrencyProps> = ({
       const trigger: string = e.currentTarget.dataset.currency;
       if (trigger === 'byn') {
         if (value === '') {
-          setCurrencyAmount(value, value);
+            ChangeCurrencyFieldAC(value, value)
         } else {
-          setCurrencyAmount(value, (+ ( Number(value).toFixed(2) ) / currencyRate).toFixed(2));
+            ChangeCurrencyFieldAC(value, (+ ( Number(value).toFixed(2) ) / currencyRate).toFixed(2))
         }
       } else {
         if (value === '') {
-          setCurrencyAmount(value, value);
+            ChangeCurrencyFieldAC(value, value)
         } else {
-          setCurrencyAmount((+Number(value).toFixed(2) * currencyRate).toFixed(2), value);
+            ChangeCurrencyFieldAC((+Number(value).toFixed(2) * currencyRate).toFixed(2), value)
         }
       }
     }
   };
 
   const changeAction = (e: React.MouseEvent<HTMLSpanElement>) => {
-    e.currentTarget.dataset.action === 'buy' ? setAction(true) : setAction(false);
+    e.currentTarget.dataset.action === 'buy' ? ChangeActionAC(true) : ChangeActionAC(false);
   };
 
   const changeCurrentCurrency = (e: React.MouseEvent<HTMLLIElement>) => {
-    e.currentTarget.dataset.currency && changeCurrency(e.currentTarget.dataset.currency);
+    e.currentTarget.dataset.currency && changeCurrentCurrencyAC(e.currentTarget.dataset.currency);
   };
 
   return (
@@ -93,18 +90,19 @@ const mapStateToProps = (state: IGlobalState) => {
   };
 };
 // @ts-ignore
-const mapDispatchToProps = (dispatch: Dispatch<CurrencyReducersTypes>) => {
-  return {
-    setCurrencyAmount(amountOfBYN: string, amountOfCurrency: string) {
-      dispatch(ChangeCurrencyFieldAC(amountOfBYN, amountOfCurrency));
-    },
-    setAction(isBuying: boolean) {
-      dispatch(ChangeActionAC(isBuying));
-    },
-    changeCurrency(currency: string) {
-      dispatch(changeCurrentCurrencyAC(currency));
-    },
-  };
-};
+// const mapDispatchToProps = (dispatch: Dispatch<CurrencyReducersTypes>) => {
+//   return {
+//     setCurrencyAmount(amountOfBYN: string, amountOfCurrency: string) {
+//       dispatch(ChangeCurrencyFieldAC(amountOfBYN, amountOfCurrency));
+//     },
+//     setAction(isBuying: boolean) {
+//       dispatch(ChangeActionAC(isBuying));
+//     },
+//     changeCurrency(currency: string) {
+//       dispatch(changeCurrentCurrencyAC(currency));
+//     },
+//   };
+// };
 // @ts-ignore
-export const CurrencyExchangeContainer = compose(connect(mapStateToProps, mapDispatchToProps))(CurrencyEContainer);
+export const CurrencyExchangeContainer = compose(
+    connect(mapStateToProps, { ChangeCurrencyFieldAC, ChangeActionAC, changeCurrentCurrencyAC }))(CurrencyEContainer);
