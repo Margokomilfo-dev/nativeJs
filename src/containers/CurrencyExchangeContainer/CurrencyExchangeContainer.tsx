@@ -1,20 +1,20 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CurrencyExchange from '../../components/CurrencyExchange/CurrencyExchange';
-import { IGlobalState } from '../../redux/state';
-import { CurrencyState } from '../../redux/currencyReducer';
-import { compose } from 'redux';
 import {
     ChangeActionAC,
     ChangeCurrencyFieldAC,
     changeCurrentCurrencyAC,
     useDispatch
 } from '../../redux/actions';
+import { selectCurrencyState } from '../../redux/selectors';
 
-const CurrencyEContainer: React.FunctionComponent<CurrencyState> = ({ currencies, currentCurrency, isBuying, amountOfBYN,  amountOfCurrency}) => {
+const CurrencyEContainer: React.FunctionComponent = () => {
 
     const dispatch = useDispatch(); //теперь мы присваиваем наш типизированный самонаписанный юзДиспатч - вуаля! В АС-файле мы  добавили свою функции юзДиспатча и ее сюда импортируем.
-    let currencyRate: number = 0;
+    let currencyRate: number = 0
+
+    const {currencies, currentCurrency, isBuying, amountOfBYN, amountOfCurrency} = useSelector(selectCurrencyState)
 
     const currenciesName = currencies.map((currency) => {
         if (currency.currencyName === currentCurrency) {
@@ -68,16 +68,4 @@ const CurrencyEContainer: React.FunctionComponent<CurrencyState> = ({ currencies
         </React.Fragment>
     );
 };
-
-const mapStateToProps = (state: IGlobalState) => {
-    return {
-        currencies: state.currency.currencies,
-        currentCurrency: state.currency.currentCurrency,
-        isBuying: state.currency.isBuying,
-        amountOfBYN: state.currency.amountOfBYN,
-        amountOfCurrency: state.currency.amountOfCurrency,
-    };
-};
-
-export const CurrencyExchangeContainer = compose(
-    connect(mapStateToProps, {}))(CurrencyEContainer);
+export default CurrencyEContainer
