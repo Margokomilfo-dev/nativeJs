@@ -113,9 +113,64 @@ task3.value() //8
 // С использованием цикла.
 //     Через рекурсию, т.к. sumTo(n) = n + sumTo(n-1) for n > 1.
 //     С использованием формулы арифметической прогрессии.
+
+function sumTo1(n: number){
+    let some = 0
+    // for (let i = 1; i <= n; i++) {
+    for (let i = n; i >= 0; i--){
+        some = some + i
+    }
+    return some
+}
+// sumTo1(3) // 6
+
+// Через рекурсию, т.к. sumTo(n) = n + sumTo(n-1) for n > 1.
+function sumTo2(n: number):number{
+    if (n === 1){
+        return n
+    } else {
+        return  n + sumTo2(n-1)
+    }
+}
+// sumTo2(100) // 5050
+//Решение по формуле: sumTo(n) = n*(n+1)/2:
+function sumTo3(n: number){
+    return  n*(n+1)/2
+}
+//sumTo3(100) //5050
+
+
+
 //2. Вычислить факториал - recurs
+function factorial (n: number): number{
+    if (n === 1){
+        return n
+    }else if (n === 2){
+        return n
+    } else {
+        return  n * factorial((n-1))
+    }
+}
+
+//factorial(5) //120
+
+function factorialSuper(n:number) {
+    return (n !== 1) ? n * factorial(n - 1) : 1;
+}
+
 //3. Числа Фибоначчи - Первые два числа равны 1, затем 2(1+1), затем 3(1+2), 5(2+3) и так далее: 1, 1, 2, 3, 5, 8, 13, 21....
+
+function fib(n:number): number {
+    if (n === 1) {
+        return 1
+    } else {
+       return  fib(n - 1) + fib(n - 2)
+    }
+}
+// fib(3)  // 2
+
 //4. Вывод односвязного списка.Сделайте два варианта решения: используя цикл и через рекурсию.
+
 //5. Вывод односвязного списка в обратном порядке.Сделайте два варианта решения: используя цикл и через рекурсию.
 
 // just a plug
