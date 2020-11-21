@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import CurrencyExchange from '../../components/CurrencyExchange/CurrencyExchange';
 import { IGlobalState } from '../../redux/state';
 import { CurrencyState } from '../../redux/currencyReducer';
@@ -8,10 +8,12 @@ import {
     ChangeActionAC,
     ChangeCurrencyFieldAC,
     changeCurrentCurrencyAC,
+    useDispatch
 } from '../../redux/actions';
 
 const CurrencyEContainer: React.FunctionComponent<CurrencyState> = ({ currencies, currentCurrency, isBuying, amountOfBYN,  amountOfCurrency}) => {
-    const dispatch = useDispatch(); //но в таком случае диспатч не проверяет типы =(
+
+    const dispatch = useDispatch(); //теперь мы присваиваем наш типизированный самонаписанный юзДиспатч - вуаля! В АС-файле мы  добавили свою функции юзДиспатча и ее сюда импортируем.
     let currencyRate: number = 0;
 
     const currenciesName = currencies.map((currency) => {
