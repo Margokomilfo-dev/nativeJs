@@ -1,3 +1,4 @@
+export const s = 1
 console.log('lesson 2');
 
 // Lexical environment
@@ -54,6 +55,16 @@ counter1()//2
 counter2() // 1
 counter1() //3
 
+
+
+// let obj = {
+//     //your code
+// }
+// if (obj.a === 1 && obj.a === 2 && obj.a === 3){
+//     console.log('work');
+// }
+
+
 // Task 03
 // Переписать функцию из Task 02 так, что бы она принимала число в качестве аргумента и это число было стартовым значением счетчика
 // и возвращала следующий объект методов:
@@ -94,6 +105,20 @@ task3.value() //0
 task3.set(8)
 task3.value() //8
 
+function makeCounter2(n:number) {
+    let count = n
+    return {
+        increase: () => count++,
+        decrease: () => count--,
+        set: (num:number) => count= num,
+        reset: () => {
+            return count = 0
+        },
+        getCount: () => count
+    }
+}
+let counter = makeCounter2(5)
+counter.increase() //4
 // Task 04*
 // Реализовать функцию superSum которая принимает число в качестве аргумента, которое указывает на количество слагаемых
 // и что бы корректно работали следующие вызовы:
@@ -106,8 +131,35 @@ task3.value() //8
 
 // P.S. типизируйте только аргументы, а при вызове функции используйте @ts-ignore
 
+function superSum(num: number) {
+    if (num === 0) return 0
+    if (num === 1) return (num: number) => num
 
-// Task 05
+    let _arguments: number[] = []
+
+    function helper(...args: number[]) { //псевдомасив arguments
+        _arguments = [..._arguments, ...args]
+        if (_arguments.length >= num){
+            _arguments.length = num
+            return _arguments.reduce((acc:number, number: number)=> acc+number)
+        } else {
+            return helper
+        }
+    }
+    return helper
+}
+// @ts-ignore
+console.log(superSum(3)(2)(5)(3));
+// @ts-ignore
+console.log(superSum(3)(2,5)(3));
+
+
+function test(...args: number[]) {
+    console.log(args);
+}
+    test (1,4,6,3,3)
+// Task
+//recursion
 // решить все задачи по рекурсии которые даны в конце статьи https://learn.javascript.ru/recursion
 //1. Напишите функцию sumTo(n), которая вычисляет сумму чисел 1 + 2 + ... + n.
 // С использованием цикла.
@@ -126,11 +178,9 @@ function sumTo1(n: number){
 
 // Через рекурсию, т.к. sumTo(n) = n + sumTo(n-1) for n > 1.
 function sumTo2(n: number):number{
-    if (n === 1){
-        return n
-    } else {
-        return  n + sumTo2(n-1)
-    }
+    if (n === 1) return n
+    return  n + sumTo2(n-1)
+
 }
 // sumTo2(100) // 5050
 //Решение по формуле: sumTo(n) = n*(n+1)/2:
@@ -139,7 +189,11 @@ function sumTo3(n: number){
 }
 //sumTo3(100) //5050
 
+function sumTo(n: number, acc: number = 0):number{
+    if (n === 1) return n + acc
+    return  sumTo(n-1, acc + n)
 
+}
 
 //2. Вычислить факториал - recurs
 function factorial (n: number): number{
@@ -172,6 +226,3 @@ function fib(n:number): number {
 //4. Вывод односвязного списка.Сделайте два варианта решения: используя цикл и через рекурсию.
 
 //5. Вывод односвязного списка в обратном порядке.Сделайте два варианта решения: используя цикл и через рекурсию.
-
-// just a plug
-export default () => {};
