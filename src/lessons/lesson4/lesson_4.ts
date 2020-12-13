@@ -76,23 +76,23 @@ const handlePromise: handlePromiseType = {
 
 export const createPromise = () => {
     handlePromise.promise = new Promise((res, rej) => {
-        handlePromise.resolve = res
-        handlePromise.reject = rej
-    })
-    handlePromise.promise.then(res => handlePromise.onSuccess(1))
-    handlePromise.promise.catch(res => handlePromise.onError(0))
-    console.log(handlePromise)
-}
+        handlePromise.resolve = res;
+        handlePromise.reject = rej;
+    });
+    handlePromise.promise.then(res => handlePromise.onSuccess(res));
+    handlePromise.promise.catch(err => handlePromise.onError(err));
+    console.log(handlePromise);
+};
 
 export const resolvePromise = () => {
-    handlePromise.resolve && handlePromise.resolve()
-}
+    handlePromise.resolve && handlePromise.resolve();
+};
 export const rejectPromise = () => {
-    handlePromise.reject && handlePromise.reject()
-}
+    handlePromise.reject && handlePromise.reject();
+};
 
 // @ts-ignore
-window.handlePromise = handlePromise
+window.handlePromise = handlePromise;
 // Task 06
 // Создайте промис, который через 1 с возвращает строку "My name is".
 // Создайте функцию onSuccess, которая получает один параметр,
@@ -129,14 +129,47 @@ const promise3: Promise<Object> = new Promise((res, rej) => {
 });
 
 
-const result: Promise<Array<Object>> = Promise.all([promise1, promise2, promise3])
-result.then(([a,b,c]: Array<Object>)=> ({...a, ...b, ...c})).then(console.log)
+const result: Promise<Array<Object>> = Promise.all([promise1, promise2, promise3]);
+result.then(([a, b, c]: Array<Object>) => ({ ...a, ...b, ...c })).then(console.log);
 ///OR =====================
-result.then((data: Array<Object>)=> {
+result.then((data: Array<Object>) => {
     return data.reduce((acc, item) => {
-        return Object.assign(acc, item)
-    }, {})
-    }).then(console.log)
+        return Object.assign(acc, item);
+    }, {});
+}).then(console.log);
 //====================
 export default () => {
 };
+
+
+//-----2
+// async function sleep(ms: number) {
+//     return new Promise(async (res, rej) => {
+//          await setTimeout(()=> {
+//              console.log(ms);
+//              res()
+//          }, ms* 100);
+//     });
+// }
+//-----3
+// async function sleep(ms: number) {
+//     return new Promise( (res, rej) => {
+//           setTimeout(()=> {
+//               res(console.log(ms));
+//          }, ms* 100);
+//     });
+// }
+//-----1 my
+function sleep(ms: number) {
+    new Promise((res, rej) => {
+        res(console.log(ms));
+        setTimeout(res, ms*100);
+    });
+}
+async function show() {
+    await sleep(3)
+    await sleep(2)
+    await sleep(1)
+}
+
+show();
